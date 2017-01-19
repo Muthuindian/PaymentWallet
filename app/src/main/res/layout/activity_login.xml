@@ -130,7 +130,11 @@
             <customfonts.MyButton
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+<<<<<<< HEAD
                 android:layout_weight="0.8"
+=======
+                android:layout_weight="1"
+>>>>>>> sathish/master
                 android:gravity="center"
                 android:textSize="18dp"
                 android:id="@+id/login"
@@ -144,7 +148,11 @@
             <customfonts.MyTextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+<<<<<<< HEAD
                 android:layout_weight="1"
+=======
+                android:layout_weight="0.8"
+>>>>>>> sathish/master
                 android:gravity="center"
                 android:textSize="18dp"
                 android:layout_marginLeft="15dp"

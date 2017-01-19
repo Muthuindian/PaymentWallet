@@ -18,7 +18,10 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+<<<<<<< HEAD
 import org.json.JSONArray;
+=======
+>>>>>>> sathish/master
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +31,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText password;
     private Button login;
     private TextView register;
+<<<<<<< HEAD
     private String string_mobilenumber,string_password,json_mobilenumber,json_password;
+=======
+    private String string_mobilenumber,string_password;
+    
+>>>>>>> sathish/master
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         register.setOnClickListener( this );
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> sathish/master
         @Override
         public void onClick(View v) {
             getData();
@@ -80,10 +92,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // display response
                         Log.d("Response", response.toString());
                         Toast.makeText(LoginActivity.this,response.toString(),Toast.LENGTH_LONG).show();
+<<<<<<< HEAD
                         if(loginValidate(response.toString()))
                             nextActivity();
                         else
                             Toast.makeText(LoginActivity.this,"Mobile number or Password are incorrect",Toast.LENGTH_LONG).show();
+=======
+                        nextActivity();
+>>>>>>> sathish/master
                     }
                 },
                 new Response.ErrorListener()
@@ -110,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(next);
     }
 
+<<<<<<< HEAD
     private boolean loginValidate(String response)
     {
         try {
@@ -128,4 +145,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         else
             return false;
     }
+=======
+>>>>>>> sathish/master
 }
