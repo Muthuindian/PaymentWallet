@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Payment Wallet</string>
+
+    <string name="Rs">\u20B9</string>
+
+    <string name="newuser"><u>new users register here</u></string>
+
+</resources>

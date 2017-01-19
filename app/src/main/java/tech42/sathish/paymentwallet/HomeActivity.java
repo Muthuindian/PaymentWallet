@@ -1,0 +1,19 @@
+package tech42.sathish.paymentwallet;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+/**
+ * Created by lenovo on 19/1/17.
+ */
+
+public class HomeActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+    }
+}
