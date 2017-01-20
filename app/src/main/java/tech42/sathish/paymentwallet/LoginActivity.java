@@ -1,5 +1,6 @@
 package tech42.sathish.paymentwallet;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,8 +28,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText password;
     private Button login;
     private TextView register;
+    private ProgressDialog progressDialog;
 
     private String string_mobilenumber,string_password,json_mobilenumber,json_password,json_balance;
+    private String URL = "https://walletcase.herokuapp.com/wallets/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,19 +64,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     private void registerActivity() {
-        Intent next = new Intent(LoginActivity.this,HomeActivity.class);
+        Intent next = new Intent(LoginActivity.this,MainActivity.class);
         startActivity(next);
     }
 
 
     public void checkLogin()
     {
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMessage("Signing in..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        final String url = "https://walletcase.herokuapp.com/wallets/" + string_mobilenumber;
+        URL += string_mobilenumber;
 
         // prepare the Request
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>()
                 {
                     @Override
@@ -84,10 +92,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         if(loginValidate(response.toString()))
                             nextActivity();
-                        else
-                            Toast.makeText(LoginActivity.this,"Mobile number or Password are incorrect",Toast.LENGTH_LONG).show();
-
-                        nextActivity();
+                        else{
+                            Toast.makeText(LoginActivity.this,"Mobile number or Password was incorrect",Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();}
 
                     }
                 },
@@ -114,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent next = new Intent(LoginActivity.this,HomeActivity.class);
         next.putExtra("balance",json_balance);
         startActivity(next);
+        progressDialog.dismiss();
     }
 
 

@@ -36,9 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button register;
     private String String_MobileNumber,String_Email,String_Password;
     private ProgressDialog progressDialog;
-    private static final String URL = "http://private-894874-notecase.apiary-mock.com/v1/wallets";
-    private static final String DATA= "data";
-    private static final String REF = "ref";
+    private static final String URL = "https://walletcase.herokuapp.com/wallets";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void nextActivity() {
         Intent next = new Intent(MainActivity.this,HomeActivity.class);
+        next.putExtra("balance","0");
         startActivity(next);
+        progressDialog.dismiss();
     }
 
     public boolean isConnected(){
@@ -85,9 +85,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void createWalletAccount()
     {
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Creating account..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = "https://walletcase.herokuapp.com/wallets";
 
             final String requestBody = "{\n" +
                     "    \"ref\": \""+String_MobileNumber+"\",\n" +
@@ -137,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             };
 
             requestQueue.add(stringRequest);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
