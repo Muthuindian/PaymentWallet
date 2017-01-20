@@ -15,7 +15,75 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.7"/>
+            android:layout_weight="0.6"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/rectangle_background"
+            android:orientation="vertical"
+            android:layout_weight="1.5">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"/>
+
+            <customfonts.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:text="Revenue Balance"
+                android:textSize="25dp"
+                android:gravity="center"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:orientation="horizontal">
+
+                <customfonts.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Rs"
+                    android:textColor="#ea5555"
+                    android:textSize="30dp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+
+                <customfonts.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:textColor="#ea5555"
+                    android:layout_gravity="center"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:id="@+id/balance"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"/>
 
         <ImageView
             android:layout_width="match_parent"
@@ -82,7 +150,6 @@
                         android:layout_height="match_parent"
                         android:id="@+id/unique_id"
                         android:paddingLeft="20dp"
-                        android:inputType="number"
                         android:layout_marginTop="3dp"
                         android:singleLine="true"
                         android:imeOptions="actionNext"
@@ -118,7 +185,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"/>
+            android:layout_weight="0.8"/>
 
     </LinearLayout>
 
