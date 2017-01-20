@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button login;
     private TextView register;
 
-    private String string_mobilenumber,string_password,json_mobilenumber,json_password;
+    private String string_mobilenumber,string_password,json_mobilenumber,json_password,json_balance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     private void registerActivity() {
-        Intent next = new Intent(LoginActivity.this,MainActivity.class);
+        Intent next = new Intent(LoginActivity.this,HomeActivity.class);
         startActivity(next);
     }
 
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onResponse(JSONObject response) {
                         // display response
                         Log.d("Response", response.toString());
-                        Toast.makeText(LoginActivity.this,response.toString(),Toast.LENGTH_LONG).show();
+                     //   Toast.makeText(LoginActivity.this,response.toString(),Toast.LENGTH_LONG).show();
 
                         if(loginValidate(response.toString()))
                             nextActivity();
@@ -111,7 +111,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void nextActivity() {
-        Intent next = new Intent(LoginActivity.this,MainActivity.class);
+        Intent next = new Intent(LoginActivity.this,HomeActivity.class);
+        next.putExtra("balance",json_balance);
         startActivity(next);
     }
 
@@ -122,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             JSONObject jsonObject = new JSONObject(response.toString());
 
             json_mobilenumber = jsonObject.getString("ref");
+            json_balance = jsonObject.getString("balance");
             JSONObject dataObject = new JSONObject(jsonObject.getString("data"));
             json_password = dataObject.getString("password");
         }
