@@ -162,7 +162,7 @@
                 android:textAllCaps="false"
                 android:background="@drawable/button_background"
                 android:textColor="#fcfcfc"
-                android:text="Register"/>
+                android:text="Create Account"/>
 
 
         </LinearLayout>

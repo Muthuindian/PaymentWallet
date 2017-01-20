@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     {
         Bundle bundle = getIntent().getExtras();
         accountType = bundle.getString("accountType");
-        URL += accountType;
+        URL += accountType + "/";
 
         if ( accountType.equals("wallets"))
         {

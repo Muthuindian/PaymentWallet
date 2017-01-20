@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,8 +24,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 
@@ -33,10 +40,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mobileNumber;
     private EditText name;
     private EditText password;
+    private TextView accountText;
+    private ImageView accountImage;
     private Button register;
     private String String_MobileNumber,String_Name,String_Password,accountType;
     private ProgressDialog progressDialog;
-    private String URL = "https://walletcase.herokuapp.com/";
+    private String URL = "https://walletcase.herokuapp.com/",URL2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +57,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getAccountType();
     }
 
-    private void getAccountType()
-    {
-        Bundle bundle = getIntent().getExtras();
-        accountType = bundle.getString("accountType");
-        URL += accountType;
-    }
-
 
     private void findViews() {
         mobileNumber = (EditText)findViewById( R.id.mobile_number );
         name = (EditText)findViewById( R.id.name );
         password = (EditText)findViewById( R.id.password );
         register = (Button)findViewById( R.id.register );
+        accountText = (TextView)findViewById(R.id.account_text);
+        accountImage = (ImageView)findViewById(R.id.account_image);
 
         register.setOnClickListener(this);
     }
+
+    private void getAccountType()
+    {
+        Bundle bundle = getIntent().getExtras();
+        accountType = bundle.getString("accountType");
+        URL += accountType + "/";
+        URL2 = URL;
+
+        if ( accountType.equals("wallets"))
+        {
+            accountImage.setImageResource(R.drawable.wallet);
+            accountText.setText("Wallets Account");
+        }
+        else if ( accountType.equals("rechargers"))
+        {
+            accountImage.setImageResource(R.drawable.recharge);
+            accountText.setText("Rechargers Account");
+        }
+        else
+        {
+            accountImage.setImageResource(R.drawable.revenue);
+            accountText.setText("Revenue Account");
+        }
+
+    }
+
 
     @Override
     public void onClick(View v) {
         getData();
         if ( v == register ) {
             if(isConnected())
-                createWalletAccount();
+                //createWalletAccount();
+            already_Have_Account_or_Not();
             else
                 Toast.makeText(this,"No internet connection..",Toast.LENGTH_SHORT).show();
         }
@@ -80,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent next = new Intent(MainActivity.this,HomeActivity.class);
         next.putExtra("balance","0");
         startActivity(next);
+        finish();
         progressDialog.dismiss();
     }
 
@@ -123,6 +155,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("VOLLEY", error.toString());
+                    Toast.makeText(getApplicationContext(),"Mobile number was already registered..",Toast.LENGTH_SHORT);
+                    progressDialog.dismiss();
                 }
             }) {
                 @Override
@@ -164,5 +198,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String_Name = name.getText().toString().trim();
         String_Password = password.getText().toString().trim();
     }
+
+
+    private void already_Have_Account_or_Not()
+    {
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Mobile number Validating..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        URL2 += String_MobileNumber;
+
+        // prepare the Request
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, URL2, null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if(loginValidate(response.toString())) {
+                            progressDialog.dismiss();
+                            createWalletAccount();
+                        }
+                        else{
+                            progressDialog.dismiss();
+                            Toast.makeText(MainActivity.this,"This mobile number already have an account..",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.getMessage());
+                    }
+                }
+        );
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+    }
+
+
+    private boolean loginValidate(String response)
+    {
+        JSONObject dataObject=null;
+        try {
+            JSONObject jsonObject = new JSONObject(response.toString());
+
+             dataObject = new JSONObject(jsonObject.getString("data"));
+        }
+        catch(JSONException e)
+        {
+            dataObject = null;
+        }
+        // validate login
+
+        if(dataObject == null)
+            return true;
+        else
+            return false;
+    }
+
 
 }
