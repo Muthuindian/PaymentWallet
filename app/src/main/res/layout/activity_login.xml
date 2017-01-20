@@ -77,7 +77,6 @@
                         android:layout_height="match_parent"
                         android:id="@+id/mobile_number"
                         android:paddingLeft="20dp"
-                        android:inputType="number"
                         android:layout_marginTop="3dp"
                         android:singleLine="true"
                         android:imeOptions="actionNext"

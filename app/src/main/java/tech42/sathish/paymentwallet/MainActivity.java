@@ -101,14 +101,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if ( v == register ) {
             if(isConnected())
                 //createWalletAccount();
-            already_Have_Account_or_Not();
+            {
+                if(dataValidation()) {
+                    if(accountType.equals("wallets"))
+                        already_Have_Account_or_Not();
+                    else
+                        createWalletAccount();
+                }
+                else
+                    Toast.makeText(this,"Please enter all values..",Toast.LENGTH_SHORT).show();
+            }
             else
                 Toast.makeText(this,"No internet connection..",Toast.LENGTH_SHORT).show();
         }
     }
 
     private void nextActivity() {
-        Intent next = new Intent(MainActivity.this,HomeActivity.class);
+        Intent next = new Intent(MainActivity.this,RechargeActivity.class);
         next.putExtra("balance","0");
         startActivity(next);
         finish();
@@ -136,14 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-            final String requestBody = "{\n" +
-                    "    \"ref\": \""+String_MobileNumber+"\",\n" +
-                    "    \"data\": {\n" +
-                    "        \"name\": \""+String_Name+"\",\n" +
-                    "        \"password\": \""+String_Password+"\"\n" +
-                    "    },\n" +
-                    "    \"token\": \"secret\"\n" +
-                    "}";
+            final String requestBody = CreateJSON(String_MobileNumber,String_Name,String_Password);
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("VOLLEY", error.toString());
-                    Toast.makeText(getApplicationContext(),"Mobile number was already registered..",Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this,"This mobile number already have an account..",Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             }) {
@@ -199,6 +201,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String_Password = password.getText().toString().trim();
     }
 
+    private String CreateJSON(String textmobile , String textname , String textpassword) throws JSONException {
+        JSONObject obj = new JSONObject().put("ref", textmobile) .put("data", new JSONObject().put("name", textname).put("password" , textpassword)) .put("token", "secret") ;
+        return obj.toString();
+    }
+
+    private boolean dataValidation()
+    {
+        if(String_MobileNumber.equals("")||String_Name.equals("")||String_Password.equals(""))
+            return false;
+        else
+            return true;
+    }
 
     private void already_Have_Account_or_Not()
     {
@@ -217,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     @Override
                     public void onResponse(JSONObject response) {
-                        if(loginValidate(response.toString())) {
+                        if(accountValidate(response.toString())) {
                             progressDialog.dismiss();
                             createWalletAccount();
                         }
@@ -241,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private boolean loginValidate(String response)
+    private boolean accountValidate(String response)
     {
         JSONObject dataObject=null;
         try {
@@ -260,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else
             return false;
     }
+
 
 
 }

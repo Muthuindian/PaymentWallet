@@ -1,5 +1,6 @@
 package tech42.sathish.paymentwallet;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +32,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView accountText;
     private ImageView accountImage;
     private ProgressDialog progressDialog;
-
     private String string_mobilenumber,string_password,json_mobilenumber,json_password,json_balance,accountType;
     private String URL = "https://walletcase.herokuapp.com/";
 
@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         register = (Button) findViewById( R.id.register );
         accountText = (TextView)findViewById(R.id.account_text);
         accountImage = (ImageView)findViewById(R.id.account_image);
-
         login.setOnClickListener( this );
         register.setOnClickListener( this );
     }
@@ -131,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(JSONObject response) {
                         if(loginValidate(response.toString()))
-                            nextActivity();
+                           nextActivity();
                         else{
                             Toast.makeText(LoginActivity.this,"Mobile number or Password was incorrect",Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();}
@@ -160,10 +159,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void nextActivity() {
-        Intent next = new Intent(LoginActivity.this,HomeActivity.class);
-        next.putExtra("balance",json_balance);
-        startActivity(next);
         progressDialog.dismiss();
+        Intent next=new Intent();
+        if( accountType.equals("wallets"))
+            next = new Intent(LoginActivity.this, SpendActivity.class);
+        else if( accountType.equals("rechargers"))
+            next = new Intent(LoginActivity.this, RechargeActivity.class);
+        else
+            next = new Intent(LoginActivity.this, RefundActivity.class);
+
+        next.putExtra("balance",json_balance);
+        next.putExtra("ref",string_mobilenumber);
+        startActivity(next);
+        finish();
     }
 
 
