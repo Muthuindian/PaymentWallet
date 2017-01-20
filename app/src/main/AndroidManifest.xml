@@ -18,7 +18,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="Sign in"
-            android:theme="@style/AppTheme_NoActionBar_FullScreen"></activity>
+            android:theme="@style/AppTheme_NoActionBar_FullScreen" />
         <activity
             android:name=".HomeActivity"
             android:label="Home"
@@ -32,6 +32,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RechargeActivity"
+            android:theme="@style/AppTheme_NoActionBar_FullScreen" />
+        <activity android:name=".SpendActivity"
+            android:theme="@style/AppTheme_NoActionBar_FullScreen"/>
+        <activity android:name=".RefundActivity"
+            android:theme="@style/AppTheme_NoActionBar_FullScreen"/>
     </application>
 
 </manifest>

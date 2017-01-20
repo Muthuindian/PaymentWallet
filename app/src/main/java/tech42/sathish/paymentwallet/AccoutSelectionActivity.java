@@ -38,7 +38,7 @@ public class AccoutSelectionActivity extends AppCompatActivity implements View.O
         else if(v == rechargeLayout)
             nextActivity("rechargers");
         else if(v == revenueLayout)
-            nextActivity("revenue");
+            nextActivity("revenues");
     }
 
     private void nextActivity(String accountType)
