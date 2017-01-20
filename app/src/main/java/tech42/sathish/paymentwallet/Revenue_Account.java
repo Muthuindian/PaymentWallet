@@ -100,7 +100,7 @@ public class Revenue_Account extends Activity implements View.OnClickListener{
             textpassword = password.getText().toString();
             try {
                 String response = post(CreateJSON(textmobile , textname , textpassword));
-                Log.v("Response", response);
+                //Log.v("Response", response);
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (IOException e) {
