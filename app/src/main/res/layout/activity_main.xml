@@ -115,7 +115,7 @@
                         android:singleLine="true"
                         android:imeOptions="actionNext"
                         android:background="@android:color/transparent"
-                        android:hint="Email"/>
+                        android:hint="Name"/>
 
                 </android.support.design.widget.TextInputLayout>
 

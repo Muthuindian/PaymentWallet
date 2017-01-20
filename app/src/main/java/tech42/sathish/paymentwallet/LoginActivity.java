@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     private void registerActivity() {
-        Intent next = new Intent(LoginActivity.this,MainActivity.class);
+        Intent next = new Intent(LoginActivity.this,Revenue_Account.class);
         startActivity(next);
     }
 
