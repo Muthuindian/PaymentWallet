@@ -3,7 +3,7 @@
     package="tech42.sathish.paymentwallet">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,10 +14,17 @@
         <activity
             android:name=".MainActivity"
             android:label="Create Account"
-            android:theme="@style/AppTheme_NoActionBar_FullScreen"></activity>
+            android:theme="@style/AppTheme_NoActionBar_FullScreen" />
         <activity
             android:name=".LoginActivity"
             android:label="Sign in"
+            android:theme="@style/AppTheme_NoActionBar_FullScreen"></activity>
+        <activity
+            android:name=".HomeActivity"
+            android:label="Home"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AccoutSelectionActivity"
             android:theme="@style/AppTheme_NoActionBar_FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,12 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".HomeActivity"
-            android:label="Home"
-            android:theme="@style/AppTheme"></activity>
-
     </application>
 
 </manifest>

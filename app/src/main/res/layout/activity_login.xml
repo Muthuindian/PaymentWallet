@@ -15,7 +15,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.7"/>
+            android:layout_weight="0.4"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:id="@+id/account_image"
+            android:src="@drawable/wallet"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
                 android:gravity="center"
-                android:id="@+id/login_text"
+                android:id="@+id/account_text"
                 android:text="Sign in"/>
 
         </LinearLayout>
@@ -138,17 +145,24 @@
                 android:textColor="#fcfcfc"
                 android:text="Sign in"/>
 
-            <customfonts.MyTextView
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"/>
+
+            <customfonts.MyButton
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.8"
                 android:gravity="center"
                 android:textSize="18dp"
+                android:id="@+id/register"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:id="@+id/register"
-                android:textColor="@color/colorAccent"
-                android:text="@string/newuser"/>
+                android:textAllCaps="false"
+                android:background="@drawable/button_background"
+                android:textColor="#fcfcfc"
+                android:text="Register"/>
 
 
         </LinearLayout>
@@ -156,7 +170,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.8"/>
+            android:layout_weight="0.4"/>
 
     </LinearLayout>
 

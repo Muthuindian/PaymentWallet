@@ -31,12 +31,12 @@ import java.io.UnsupportedEncodingException;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText mobileNumber;
-    private EditText email;
+    private EditText name;
     private EditText password;
     private Button register;
-    private String String_MobileNumber,String_Email,String_Password;
+    private String String_MobileNumber,String_Name,String_Password,accountType;
     private ProgressDialog progressDialog;
-    private static final String URL = "https://walletcase.herokuapp.com/wallets";
+    private String URL = "https://walletcase.herokuapp.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +44,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         // Assign id
         findViews();
+
+        getAccountType();
     }
+
+    private void getAccountType()
+    {
+        Bundle bundle = getIntent().getExtras();
+        accountType = bundle.getString("accountType");
+        URL += accountType;
+    }
+
 
     private void findViews() {
         mobileNumber = (EditText)findViewById( R.id.mobile_number );
-        email = (EditText)findViewById( R.id.email );
+        name = (EditText)findViewById( R.id.name );
         password = (EditText)findViewById( R.id.password );
         register = (Button)findViewById( R.id.register );
 
@@ -73,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog.dismiss();
     }
 
+
     public boolean isConnected(){
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -96,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             final String requestBody = "{\n" +
                     "    \"ref\": \""+String_MobileNumber+"\",\n" +
                     "    \"data\": {\n" +
-                    "        \"email\": \""+String_Email+"\",\n" +
+                    "        \"name\": \""+String_Name+"\",\n" +
                     "        \"password\": \""+String_Password+"\"\n" +
                     "    },\n" +
                     "    \"token\": \"secret\"\n" +
@@ -150,7 +161,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getData()
     {
         String_MobileNumber = mobileNumber.getText().toString().trim();
-        String_Email = email.getText().toString().trim();
+        String_Name = name.getText().toString().trim();
         String_Password = password.getText().toString().trim();
     }
+
 }

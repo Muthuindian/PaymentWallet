@@ -109,13 +109,13 @@
                     <customfonts.MyEditText
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/email"
+                        android:id="@+id/name"
                         android:paddingLeft="20dp"
                         android:layout_marginTop="3dp"
                         android:singleLine="true"
                         android:imeOptions="actionNext"
                         android:background="@android:color/transparent"
-                        android:hint="Email"/>
+                        android:hint="Name"/>
 
                 </android.support.design.widget.TextInputLayout>
 
