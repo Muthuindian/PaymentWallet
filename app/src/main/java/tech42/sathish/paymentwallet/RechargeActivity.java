@@ -68,7 +68,6 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         viewData();
         if (v == recharge) {
-            createRecharge();
             if(dataValidation())
                 createRecharge();
         }
@@ -92,7 +91,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
     public void createRecharge()
     {
         progressDialog = new ProgressDialog(RechargeActivity.this);
-        progressDialog.setMessage("Creating account..");
+        progressDialog.setMessage("Amount Recharging..");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
