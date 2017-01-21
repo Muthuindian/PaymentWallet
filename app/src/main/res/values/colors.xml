@@ -6,5 +6,6 @@
 
     <color name="colortext">#100b20</color>
     <color name="colorhint">#a9aaac</color>
+    <color name="white">#ffffff</color>
 
 </resources>

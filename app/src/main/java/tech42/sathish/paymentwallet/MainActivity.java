@@ -3,11 +3,14 @@ package tech42.sathish.paymentwallet;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
 
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String String_MobileNumber,String_Name,String_Password,accountType;
     private ProgressDialog progressDialog;
     private String URL = "https://walletcase.herokuapp.com/",URL2;
+
+    private String imageEncoded;
+    private static final int REQUEST_IMAGE_CAPTURE = 111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +72,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         register = (Button)findViewById( R.id.register );
         accountText = (TextView)findViewById(R.id.account_text);
         accountImage = (ImageView)findViewById(R.id.account_image);
+        accountImage.setImageResource(R.drawable.profile);
 
         register.setOnClickListener(this);
+        accountImage.setOnClickListener(this);
     }
 
     private void getAccountType()
@@ -77,23 +86,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         URL2 = URL;
 
         if ( accountType.equals("wallets"))
-        {
-            accountImage.setImageResource(R.drawable.wallet);
             accountText.setText("Wallets Account");
-        }
         else if ( accountType.equals("rechargers"))
-        {
-            accountImage.setImageResource(R.drawable.recharge);
             accountText.setText("Rechargers Account");
-        }
         else
-        {
-            accountImage.setImageResource(R.drawable.revenue);
             accountText.setText("Revenue Account");
-        }
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -114,11 +112,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             else
                 Toast.makeText(this,"No internet connection..",Toast.LENGTH_SHORT).show();
         }
+        else if( v == accountImage)
+            onLaunchCamera();
     }
 
     private void nextActivity() {
         Intent next = new Intent(MainActivity.this,RechargeActivity.class);
         next.putExtra("balance","0");
+        next.putExtra("ref",String_MobileNumber);
+        next.putExtra("image",imageEncoded);
         startActivity(next);
         finish();
         progressDialog.dismiss();
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-            final String requestBody = CreateJSON(String_MobileNumber,String_Name,String_Password);
+            final String requestBody = CreateJSON(String_MobileNumber,String_Name,String_Password,imageEncoded);
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
@@ -201,8 +203,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String_Password = password.getText().toString().trim();
     }
 
-    private String CreateJSON(String textmobile , String textname , String textpassword) throws JSONException {
-        JSONObject obj = new JSONObject().put("ref", textmobile) .put("data", new JSONObject().put("name", textname).put("password" , textpassword)) .put("token", "secret") ;
+    private String CreateJSON(String textmobile , String textname , String textpassword , String image) throws JSONException {
+        JSONObject obj = new JSONObject().put("ref", textmobile) .put("data", new JSONObject().put("name", textname).put("password" , textpassword).put("image",image)) .put("token", "secret") ;
         return obj.toString();
     }
 
@@ -275,6 +277,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
     }
 
+    /*-------------------- Image upload ------------------------------*/
+
+    public void onLaunchCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            accountImage.setImageBitmap(imageBitmap);
+            encodeBitmapAndSaveToFirebase(imageBitmap);
+        }
+    }
+
+    public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+    }
 
 
 }
