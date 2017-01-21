@@ -201,7 +201,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
 
         TextView text_id = (TextView)header.findViewById(R.id.id);
         TextView text_name = (TextView)header.findViewById(R.id.name);
-        text_id.setText("ID : " + recharger_mobile_number);
+        text_id.setText(recharger_mobile_number);
         text_name.setText(string_name);
 
         ImageView image = (ImageView)header.findViewById(R.id.image);

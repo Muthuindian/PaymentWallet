@@ -202,7 +202,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
 
         TextView text_id = (TextView)header.findViewById(R.id.id);
         TextView text_name = (TextView)header.findViewById(R.id.name);
-        text_id.setText("ID : " + wallet_mobile_number);
+        text_id.setText(wallet_mobile_number);
         text_name.setText(string_name);
 
         ImageView image = (ImageView)header.findViewById(R.id.image);

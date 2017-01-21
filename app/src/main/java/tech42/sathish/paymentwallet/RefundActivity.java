@@ -195,7 +195,7 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
 
         TextView text_id = (TextView)header.findViewById(R.id.id);
         TextView text_name = (TextView)header.findViewById(R.id.name);
-        text_id.setText("ID : " + string_name);
+        text_id.setText(string_name);
         text_name.setText(string_usernmae);
 
         ImageView image = (ImageView)header.findViewById(R.id.image);
