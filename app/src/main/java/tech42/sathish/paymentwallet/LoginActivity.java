@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView accountText;
     private ImageView accountImage;
     private ProgressDialog progressDialog;
-    private String string_mobilenumber,string_password,json_mobilenumber,json_password,json_balance,accountType;
+    private String string_mobilenumber,string_password,json_mobilenumber,json_password,json_balance,accountType,string_image,string_name;
     private String URL = "https://walletcase.herokuapp.com/";
 
 
@@ -170,6 +170,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         next.putExtra("balance",json_balance);
         next.putExtra("ref",string_mobilenumber);
+        next.putExtra("image",string_image);
+        next.putExtra("name",string_name);
+
         startActivity(next);
         finish();
     }
@@ -184,7 +187,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             json_balance = jsonObject.getString("balance");
             JSONObject dataObject = new JSONObject(jsonObject.getString("data"));
             json_password = dataObject.getString("password");
-
+            string_image = dataObject.getString("image");
+            string_name = dataObject.getString("name");
         }
         catch(JSONException e)
         {

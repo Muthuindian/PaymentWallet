@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         next.putExtra("balance","0");
         next.putExtra("ref",String_MobileNumber);
         next.putExtra("image",imageEncoded);
+        next.putExtra("name",String_Name);
         startActivity(next);
         finish();
         progressDialog.dismiss();

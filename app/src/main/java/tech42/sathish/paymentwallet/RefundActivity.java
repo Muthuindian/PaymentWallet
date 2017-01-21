@@ -1,6 +1,7 @@
 package tech42.sathish.paymentwallet;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.NavigationView;
@@ -39,7 +40,7 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
 
     private TextView balance;
     private EditText unique_id;
-    private String revenue_balance,string_id,string_amount,string_name,string_image;
+    private String revenue_balance,string_id,string_amount,string_name,string_image,string_usernmae;
     private TextView recharge;
     private ProgressDialog progressDialog;
     private String URL = "https://walletcase.herokuapp.com/refunds";
@@ -75,6 +76,7 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
         revenue_balance = bundle.getString("balance");
         string_name = bundle.getString("ref");
         string_image = bundle.getString("image");
+        string_usernmae = bundle.getString("name");
         balance.setText(revenue_balance);
     }
 
@@ -177,15 +179,9 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
 
                 switch (id){
                     case R.id.home:
-                        Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
-                        drawerLayout.closeDrawers();
-                        break;
-                    case R.id.settings:
-                        Toast.makeText(getApplicationContext(),"Settings",Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.trash:
-                        Toast.makeText(getApplicationContext(),"Trash",Toast.LENGTH_SHORT).show();
-                        drawerLayout.closeDrawers();
+                        Intent next = new Intent(RefundActivity.this,AccoutSelectionActivity.class);
+                        startActivity(next);
+                        finish();
                         break;
                     case R.id.logout:
                         finish();
@@ -194,9 +190,14 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
                 return true;
             }
         });
+
         View header = navigationView.getHeaderView(0);
-        TextView tv_email = (TextView)header.findViewById(R.id.name);
-        tv_email.setText(string_name);
+
+        TextView text_id = (TextView)header.findViewById(R.id.id);
+        TextView text_name = (TextView)header.findViewById(R.id.name);
+        text_id.setText("ID : " + string_name);
+        text_name.setText(string_usernmae);
+
         ImageView image = (ImageView)header.findViewById(R.id.image);
         try {
             image.setImageBitmap(decodeFromFirebaseBase64(string_image));

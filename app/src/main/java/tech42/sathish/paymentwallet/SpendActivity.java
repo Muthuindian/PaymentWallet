@@ -1,6 +1,7 @@
 package tech42.sathish.paymentwallet;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.NavigationView;
@@ -40,7 +41,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
     private TextView balance;
     private EditText unique_id;
     private EditText receiver_mobile_number;
-    private String wallet_mobile_number,revenue_balance,string_mobilenumber,string_id,string_amount,string_image;
+    private String wallet_mobile_number,revenue_balance,string_mobilenumber,string_id,string_amount,string_image,string_name;
     private EditText amount;
     private TextView recharge;
     private ProgressDialog progressDialog;
@@ -80,6 +81,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
         revenue_balance = bundle.getString("balance");
         wallet_mobile_number = bundle.getString("ref");
         string_image = bundle.getString("image");
+        string_name = bundle.getString("name");
         balance.setText(revenue_balance);
     }
 
@@ -184,15 +186,9 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
 
                 switch (id){
                     case R.id.home:
-                        Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
-                        drawerLayout.closeDrawers();
-                        break;
-                    case R.id.settings:
-                        Toast.makeText(getApplicationContext(),"Settings",Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.trash:
-                        Toast.makeText(getApplicationContext(),"Trash",Toast.LENGTH_SHORT).show();
-                        drawerLayout.closeDrawers();
+                        Intent next = new Intent(SpendActivity.this,AccoutSelectionActivity.class);
+                        startActivity(next);
+                        finish();
                         break;
                     case R.id.logout:
                         finish();
@@ -201,9 +197,13 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
                 return true;
             }
         });
+
         View header = navigationView.getHeaderView(0);
-        TextView tv_email = (TextView)header.findViewById(R.id.name);
-        tv_email.setText(wallet_mobile_number);
+
+        TextView text_id = (TextView)header.findViewById(R.id.id);
+        TextView text_name = (TextView)header.findViewById(R.id.name);
+        text_id.setText("ID : " + wallet_mobile_number);
+        text_name.setText(string_name);
 
         ImageView image = (ImageView)header.findViewById(R.id.image);
         try {
