@@ -118,7 +118,7 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onResponse(String response) {
                     progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(),string_amount + " rupess was successfully refunded..",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Refunded Successfully..",Toast.LENGTH_LONG).show();
                     Log.i("VOLLEY", response);
                 }
             }, new Response.ErrorListener() {

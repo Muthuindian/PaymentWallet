@@ -2,12 +2,15 @@ package tech42.sathish.paymentwallet;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -36,7 +39,10 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import static android.R.attr.bitmap;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -53,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String imageEncoded;
     private static final int REQUEST_IMAGE_CAPTURE = 111;
+    private static final int SELECT_PICTURE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this,"No internet connection..",Toast.LENGTH_SHORT).show();
         }
         else if( v == accountImage)
-            onLaunchCamera();
+            selectImage();
     }
 
     private void nextActivity() {
@@ -287,6 +294,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /* Choose an image from Gallery */
+
+    private void selectImage() {
+        final CharSequence[] items = { "Take Photo", "Choose from Library",
+                "Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result=Utility.checkPermission(MainActivity.this);
+
+                if (items[item].equals("Take Photo")) {
+                    if(result)
+                        onLaunchCamera();
+
+                } else if (items[item].equals("Choose from Library")) {
+                    if(result)
+                        openImageChooser();
+
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    void openImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -294,6 +337,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             accountImage.setImageBitmap(imageBitmap);
             encodeBitmapAndSaveToFirebase(imageBitmap);
+        }
+        else if(requestCode == SELECT_PICTURE && resultCode == RESULT_OK )
+        {
+            if (data != null) {
+                // Get the URI of the selected file
+                final Uri uri = data.getData();
+                useImage(uri);
+            }
+        }
+    }
+
+    void useImage(Uri uri)
+    {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            accountImage.setImageBitmap(bitmap);
+            encodeBitmapAndSaveToFirebase(bitmap);
+        }
+        catch(IOException e)
+        {
+            Log.d("Error",e.getMessage());
         }
     }
 
