@@ -46,7 +46,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
     private TextView recharge;
     private ProgressDialog progressDialog;
     private String URL = "https://walletcase.herokuapp.com/recharges";
-
+    Integer int_balance;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
 
@@ -77,7 +77,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
     private void getRechargerData()
     {
         Bundle bundle = getIntent().getExtras();
-        recharger_balance = bundle.getString("balance");
+        recharger_balance = bundle.getString("balance").replace("-","");
         recharger_mobile_number = bundle.getString("ref");
         string_image = bundle.getString("image");
         string_name = bundle.getString("name");
@@ -126,6 +126,9 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),string_amount + " rupess was successfully recharged from " + recharger_mobile_number+ " to "+string_mobilenumber,Toast.LENGTH_LONG).show();
                     Log.i("VOLLEY", response);
+                    int_balance = Integer.parseInt(string_amount) + Integer.parseInt(recharger_balance);
+                    balance.setText(int_balance.toString());
+                    clear();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -236,5 +239,19 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
     public static Bitmap decodeFromFirebaseBase64(String image) throws IOException {
         byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+    }
+
+    public void clear()
+    {
+        unique_id.setText("");
+        receiver_mobile_number.setText("");
+        amount.setText("");
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

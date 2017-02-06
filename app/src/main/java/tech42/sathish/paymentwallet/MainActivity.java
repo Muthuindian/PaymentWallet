@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,13 +36,10 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
-import static android.R.attr.bitmap;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -57,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressDialog progressDialog;
     private String URL = "https://walletcase.herokuapp.com/",URL2;
 
-    private String imageEncoded;
+    private String imageEncoded = "";
     private static final int REQUEST_IMAGE_CAPTURE = 111;
     private static final int SELECT_PICTURE = 100;
 
@@ -69,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViews();
 
         getAccountType();
+
     }
 
 
@@ -153,6 +151,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog.show();
 
         try {
+            if(imageEncoded.equals(""))
+            {
+                Bitmap bitmap= BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                        R.drawable.profile);
+                encodeBitmapAndSaveToFirebase(bitmap);
+            }
             RequestQueue requestQueue = Volley.newRequestQueue(this);
 
             final String requestBody = CreateJSON(String_MobileNumber,String_Name,String_Password,imageEncoded);
@@ -297,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /* Choose an image from Gallery */
 
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
+        final CharSequence[] items = { "Take Photo",
                 "Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -367,5 +371,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

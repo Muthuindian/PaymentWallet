@@ -5,7 +5,8 @@
     android:id="@+id/activity_intro_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SpendActivity"
+    tools:context="tech42.sathish.paymentwallet.SpendActivity"
+    android:background="@drawable/splash_bg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_spend">
 

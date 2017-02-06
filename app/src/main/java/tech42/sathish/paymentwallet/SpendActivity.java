@@ -46,7 +46,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
     private TextView recharge;
     private ProgressDialog progressDialog;
     private String URL = "https://walletcase.herokuapp.com/spends";
-
+    Integer int_balance;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
 
@@ -127,6 +127,9 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),string_amount + " rupess was successfully spended from " + wallet_mobile_number+ " to "+string_mobilenumber,Toast.LENGTH_LONG).show();
                     Log.i("VOLLEY", response);
+                    int_balance = Integer.parseInt(revenue_balance)-Integer.parseInt(string_amount);
+                    balance.setText(int_balance.toString());
+                    clear();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -238,5 +241,12 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
         return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
     }
 
+    public void clear()
+    {
+      unique_id.setText("");
+      receiver_mobile_number.setText("");
+        amount.setText("");
+
+    }
 }
 

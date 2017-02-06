@@ -119,6 +119,7 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
                 public void onResponse(String response) {
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),"Refunded Successfully..",Toast.LENGTH_LONG).show();
+                    clear();
                     Log.i("VOLLEY", response);
                 }
             }, new Response.ErrorListener() {
@@ -229,6 +230,17 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
     public static Bitmap decodeFromFirebaseBase64(String image) throws IOException {
         byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+    }
+
+    public void clear()
+    {
+        unique_id.setText("");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
 
